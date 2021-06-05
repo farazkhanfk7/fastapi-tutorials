@@ -1,5 +1,6 @@
 import models, schemas
 from fastapi import FastAPI, Depends, status, Response, HTTPException
+from typing import List
 from sqlalchemy.orm import Session
 from utils import get_db
 from database import engine
@@ -23,7 +24,7 @@ def new_blog(request: schemas.Blog, db: Session = Depends(get_db)):
     return {"data_recieved": new_blog}
 
 
-@app.get('/blogs/')
+@app.get('/blogs/', response_model=List[schemas.ShowBlog])
 def blogs(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
